@@ -1,37 +1,29 @@
+const {createGig,getGigs,getoneGig,deleteGig, updateGig} = require('../postcontroller')
 const express = require('express')
-const res = require('express/lib/response')
 const router = express.Router()
-const {User, Gig} = require('../dbmodels')
-const {mongoose} = require('mongoose')
+
+// implement middleware later 
+// router.use()
+
+router.get('/',getGigs)
+
+router.get('/createproject', createGig)
+
+router.route('/:id')
+    .get(getoneGig)
+    .delete(deleteGig)
+    .put(updateGig)
 
 
 
-//get all projects user is  involved in 
-//
-router.get('/',(req, res)=>{
-    req.headers
-    res.send('x x x x')
-    
-})
-router.get('/abc',(req,res)=>{
-    res.send('inside abc')
-})
-
-router.get('/createproject', async (req,res)=>{
-    // const {leaduser, title, description,crew,progress,media}=req.body
-    // res.send('hello')
-    const leaduser = 'Papa Amoah'
-    const title = 'Kojo aAmoah'
-    const description  = 'Description is what cant be long'
-    const crew = ['Yhyhmansquad','Sometohtersquad']
-    try{
-        const gig = await Gig.create({leaduser, title, description,crew})
-        res.status(200).json(gig)
-    }catch(error){
-        res.status(400).json({error: error.message})
-    }
-})
-// router.post()=>{}
-
+// id middleware
+// const posts = ['x','y','z']
+// router.param('id',(req,res,next,id)=>{
+//     // whatever later
+//     // for eg get a user id to be used through other routes 
+//     // eg below
+//     req.post = posts[id]
+//     next()
+// })
 
 module.exports = router
