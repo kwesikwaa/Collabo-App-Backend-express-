@@ -79,9 +79,6 @@ const updateGig = async(req,res)=>{
         return res.status(404).json({error: 'quick flash Gig no dey exist'})
     }
 
-    // const x = await Gig.findOneAndUpdate({_id:id},{
-
-    // })
 
     await Gig.findByIdAndUpdate(
         id,{leaduser:"Agric Updated Name"},
