@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/',getGigs)
 
-router.get('/createproject', createGig)
+router.post('/', createGig)
 
 router.route('/:id')
     .get(getoneGig)
