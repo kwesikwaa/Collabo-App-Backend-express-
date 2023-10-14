@@ -16,8 +16,14 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             trim: true,
-            minlength: 3
-        },   
+            minlength: 8
+        },
+        password:{
+            type: String,
+            required:true,
+            trim:true,
+            minlength:5
+        }   
     },
     {
         timestamps: true
@@ -28,21 +34,21 @@ const projectSchema = new Schema(
         leaduser: {type: String, required: true},
         title: {type: String, required: true},
         description: {type: String, required: true},
-        crew: {type: [String], required: true},
-        // progress:[{
-        //     progressname: {type: String, required: true},
-        //     progressvalue:{type: Number, required: true},
-        //     progressdescription:  {type: String, required: true},
-        //     progressauthor:{type: String, required: true},
-        //     progressdate: {type: Date, default: Date.now},
-        // }],
-        // media: [
-        //     {
-        //         media:{type: String, required:true},
-        //         shareable: {type: Boolean, required: true, default: false}
-        //     }
-        // ],
-        // notifications: {type: [String]},
+        crew: {type: [String], required: true,default:"leaduser"},
+        progress:[{
+            progressname: {type: String, required: true},
+            progressvalue:{type: Number, required: true},
+            progressdescription:  {type: String, required: true},
+            progressauthor:{type: String, required: true},
+            progressdate: {type: Date, default: Date.now},
+        }],
+        media: [
+            {
+                media:{type: String, required:true},
+                shareable: {type: Boolean, required: true, default: false}
+            }
+        ],
+        notifications: {type: [String]},
     },
     {
         timestamps: true
@@ -64,8 +70,8 @@ module.exports = {User, Gig}
     db.posts.find().sort({title:1/-1})
     db.posts.find({category:'jokes'}).count()
     db.posts.find().limit(5)
-    db.posts.find().sort(date:-1).limit(4)
-    db.postst.update(}{title:'hi},
+    db.posts.find().sort({date:-1 or 1}).limit(4)
+    db.postst.update({title:'hi},
         {
             title: 'xxxxx',
             body: 'ssssssss',

@@ -12,7 +12,7 @@ const createGig = async(req,res)=>{
         // console.log('inside try')
         const gig = await Gig.create({...req.body})
         console.log('after gig created variable')
-        res.status(200).json(gig)
+        res.status(201).json(gig)
     }catch(error){
         console.log('catch inside')
         res.status(400).json({error: error.message})
@@ -30,13 +30,9 @@ const getGigs = async(req,res)=>{
     }
 }
 
-const getoneGig = async(req,res)=>{
+const getSingleGig = async(req,res)=>{
     console.log('inside getagig')
     const {id} = req.params
-
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'quick flash Gig no dey exist'})
-    }
 
     const gotit = await Gig.findById(id)
     
@@ -47,53 +43,28 @@ const getoneGig = async(req,res)=>{
 }
 
 const deleteGig = async(req,res)=>{
+    console.log('inside deletegig')
     const {id}= req.params
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'quick flash Gig no dey exist'})
-    }
+   
     const deleted = await Gig.findOneAndDelete({_id:id})
     if(deleted){
         return res.status(200).json({message:`successfully deleted ${deleted}`})
     }
-    return res.status(404).json({error: "Nothing to delete"})
-
-    // await Gig.findByIdAndDelete(
-    //     id,
-    //     (err,doc)=>{
-    //         if(err){
-    //             return res.status(404).json({error:"Sorry! not available"})
-    //         }
-    //         return res.status(200).json({msg:`Gig! Successfully deleted ${doc}`})
-    //     }
-    // )
-    
+    return res.status(404).json({error: "Nothing to delete"}) 
 }
 
+
 const updateGig = async(req,res)=>{
+    console.log('inside update gig')
     const {id}= req.params
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'quick flash Gig no dey exist'})
-    }
     console.log('entering update')
     const update = await Gig.findOneAndUpdate({_id:id},{...req.body})
     if(update){
         return res.status(200).json(update)
     }
     return res.status(404).json({error:"sorry we no fit update"})
-
-    // await Gig.findByIdAndUpdate(
-    //     id,{leaduser:"Agric Updated Name"},
-    //     (err,doc)=>{
-    //         if(err){
-    //             console.log('inside error')
-    //             return res.status(400).json({error:"Sorry! not available"})
-    //         }
-    //         console.log(doc) 
-    //         console.log('update succesful')
-    //         return res.status(200).json(doc)
-    //     }
-    // )
 }
 
-module.exports = {createGig, getGigs, getoneGig, deleteGig, updateGig}
+
+module.exports = {createGig, getGigs, getSingleGig, deleteGig, updateGig}

@@ -1,4 +1,4 @@
-const {createGig,getGigs,getoneGig,deleteGig, updateGig} = require('../postcontroller')
+const {createGig,getGigs,getSingleGig,deleteGig, updateGig} = require('../postcontroller')
 const express = require('express')
 const router = express.Router()
 
@@ -10,7 +10,7 @@ router.get('/',getGigs)
 router.post('/', createGig)
 
 router.route('/:id')
-    .get(getoneGig)
+    .get(getSingleGig)
     .delete(deleteGig)
     .put(updateGig)
 
