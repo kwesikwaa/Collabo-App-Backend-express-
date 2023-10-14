@@ -13,7 +13,7 @@ app.use(express.json())
 const port = process.env.PORT || 5000
 
 
-mongoose.connect(mongourl,{useNewUrlParser: true /*useCreateIndex:true*/})
+mongoose.connect(mongourl,/*{useNewUrlParser: true useCreateIndex:true}*/)
     .then(()=> {
         console.log('Mongodb connection done!..')
         app.listen(port,()=> console.log(`Collabo backend started on port ${port}...`))
@@ -25,9 +25,9 @@ app.use('/api/v1/collabo', postsRouter)
 
 
 app.get('/',(req, res)=>{
+    console.log(`...started at ${port} .....`)
     res.json({hello: `running on ${process.env.MONGO}`})
 })
 
 
-// console 
 
