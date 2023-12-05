@@ -11,6 +11,20 @@ const userSchema = new Schema(
             trim: true,
             minlength: 3
         },
+        firstname:{
+            type: String,
+            require: true,
+            trim: true,
+        },
+        surname:{
+            type: String,
+            require: true,
+            trim: true,
+        },
+        middlename:{
+            type: String,
+            trim: true,
+        },
         email:{
             type: String,
             required: true,
@@ -23,7 +37,11 @@ const userSchema = new Schema(
             required:true,
             trim:true,
             minlength:5
-        }   
+        },
+        projects:[{
+            project:{type:mongoose.Schema.Types.ObjectId,ref:'Gig', required:true},
+            role: {type: String, required: true}
+        }]   
     },
     {
         timestamps: true
@@ -31,7 +49,7 @@ const userSchema = new Schema(
 )
 const projectSchema = new Schema(
     {
-        leaduser: {type: String, required: true},
+        lead: {type: mongoose.Schema.Types.ObjectId, ref:'User', required: true},
         title: {type: String, required: true},
         description: {type: String, required: true},
         crew: {type: [String], required: true,default:"leaduser"},

@@ -1,6 +1,16 @@
 const { mongoose } = require('mongoose')
 const {Gig} = require('../server/dbmodels')
 
+// ensures that this useer owns this data n has authorized access to take this action
+// ie if you didnt make the post, you cant delete or update it
+const authorizeuser = async (userid, gigid)=>{
+    const gig = await Gig.findById(gigid)
+    
+    if(gig !== userid){
+        res.status(401)
+        throw new Error('Not authorized')
+    }
+}
 
 const createGig = async(req,res)=>{
     // console.log('inside creategig')
@@ -11,7 +21,7 @@ const createGig = async(req,res)=>{
     try{
         // console.log('inside try')
         const gig = await Gig.create({...req.body})
-        console.log('after gig created variable')
+        console  .log('after gig created variable')
         res.status(201).json(gig)
     }catch(error){
         console.log('catch inside')
@@ -31,7 +41,7 @@ const getGigs = async(req,res)=>{
 }
 
 const getSingleGig = async(req,res)=>{
-    console.log('inside getagig')
+    
     const {id} = req.params
 
     const gotit = await Gig.findById(id)
@@ -43,8 +53,9 @@ const getSingleGig = async(req,res)=>{
 }
 
 const deleteGig = async(req,res)=>{
-    console.log('inside deletegig')
+    
     const {id}= req.params
+    authorizeuser(req.user,id)
    
     const deleted = await Gig.findOneAndDelete({_id:id})
     if(deleted){
@@ -55,8 +66,8 @@ const deleteGig = async(req,res)=>{
 
 
 const updateGig = async(req,res)=>{
-    console.log('inside update gig')
     const {id}= req.params
+    authorizeuser(req.user,id)
 
     console.log('entering update')
     const update = await Gig.findOneAndUpdate({_id:id},{...req.body})
