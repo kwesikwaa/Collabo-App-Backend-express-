@@ -1,15 +1,22 @@
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
+
 require ('dotenv').config()
 
 const app = express()
+
 const mongourl = process.env.MONGO 
 
 const postsRouter = require('./routes/posts')
 
+
 app.use(cors())
 app.use(express.json())
+app.use(morgan('tidy'))
+
+
 const port = process.env.PORT || 5000
 
 

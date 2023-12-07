@@ -1,4 +1,4 @@
-const {User} = require('../dbmodels')
+const {User} = require('../models/dbmodels')
 const jwt = require('jsonwebtoken')
 
 

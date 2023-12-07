@@ -1,5 +1,14 @@
+
 const { mongoose } = require('mongoose')
-const {Gig} = require('../server/dbmodels')
+const {Gig} = require('../models/dbmodels')
+const multer = require('multer')
+const path = require("path")
+
+const storage = multer.diskStorage({
+    filename:(req,file,cb)=>{
+        cb(null,path.extname(file.originalname) + Date.now() )
+    }
+})
 
 // ensures that this useer owns this data n has authorized access to take this action
 // ie if you didnt make the post, you cant delete or update it
@@ -11,6 +20,7 @@ const authorizeuser = async (userid, gigid)=>{
         throw new Error('Not authorized')
     }
 }
+
 
 const createGig = async(req,res)=>{
     // console.log('inside creategig')
@@ -29,6 +39,7 @@ const createGig = async(req,res)=>{
     }
 }
 
+
 const getGigs = async(req,res)=>{
     console.log('inside geALLgig')
     try{
@@ -39,6 +50,7 @@ const getGigs = async(req,res)=>{
         res.status(400).json({error:error.message})
     }
 }
+
 
 const getSingleGig = async(req,res)=>{
     
@@ -51,6 +63,7 @@ const getSingleGig = async(req,res)=>{
     }
     return res.status(404).json({error:'Sorry gig doesnt exist'})
 }
+
 
 const deleteGig = async(req,res)=>{
     
