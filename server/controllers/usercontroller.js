@@ -16,18 +16,23 @@ const cookieconfig = {
 const newUser = async (req,res)=>{
     const {username,firstname,surname,middlename,email,password} = req.body
     if( !username && !firstname && !surname && !email && !password){
+        console.log('in here')
         res.status(400).json({error:"Please enter the required fields"})
     }
     const exists = await User.findOne({email})
-    if(!exists){
+    if(exists){
         res.status(404 ).json({error:"This user already exists, kindly login instead"})
     }
 
     const salt = await bcrypt.genSalt(10)
-    const hashedpassword = await bcrypt.hashpassword(rawpassword, salt)
+    const hashedpassword = await bcrypt.hash(password, salt)
+    console.log('hashed----')
+    console.log(hashedpassword)
 
     try{
-        const createnewuser = await User.create({username,firstname,surname,email,hashedpassword})
+        console.log('in try')
+        const createnewuser = await User.create({username,firstname,surname,email,password:hashedpassword})
+        console.log('done creating----')
         res.cookie("access token",generatejwt(createnewuser.id),cookieconfig)
         res.status(201).json(
             {
@@ -37,6 +42,7 @@ const newUser = async (req,res)=>{
             }
         )
     }catch(error){
+        
         res.status(400).json({error: error.message})
     }
 }
@@ -45,10 +51,10 @@ const login = async (req, res)=>{
     const {email, password} = req.body
 
     const user = await User.findOne({email})
-    const getpassowrd = await bcrypt.compare(passowrd,user.passowrd)
+    const getpassowrd = await bcrypt.compare(password,user.password)
 
     if(user && getpassowrd){
-        res.cookie("access token",generatejwt(createnewuser.id),cookieconfig)
+        res.cookie("access token",generatejwt(user.id),cookieconfig)
         res.status(200).json({username:user.username})
     }
 

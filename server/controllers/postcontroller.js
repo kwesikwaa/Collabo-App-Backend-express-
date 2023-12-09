@@ -15,19 +15,18 @@ const storage = multer.diskStorage({
 const authorizeuser = async (userid, gigid)=>{
     const gig = await Gig.findById(gigid)
     
-    if(gig !== userid){
+    if(gig.leaduser !== userid){
         res.status(401)
-        throw new Error('Not authorized')
+        throw new Error('Not authorized')  
     }
 }
 
 
 const createGig = async(req,res)=>{
-    // console.log('inside creategig')
-    // const leaduser = 'Ga-Dambge'
-    // const title = 'Katamanso'
-    // const description  = '3-9 at dodowa'
-    // const crew = ['Yhyhmansquad','Sometohtersquad']
+    const {lead,title,description,crew,progress,media} = req.body
+
+
+
     try{
         // console.log('inside try')
         const gig = await Gig.create({...req.body})
@@ -64,9 +63,10 @@ const getSingleGig = async(req,res)=>{
     return res.status(404).json({error:'Sorry gig doesnt exist'})
 }
 
+// use :id for it
 
 const deleteGig = async(req,res)=>{
-    
+    // should bring in the particular igs id
     const {id}= req.params
     authorizeuser(req.user,id)
    
@@ -89,6 +89,9 @@ const updateGig = async(req,res)=>{
     }
     return res.status(404).json({error:"sorry we no fit update"})
 }
+
+
+
 
 
 module.exports = {createGig, getGigs, getSingleGig, deleteGig, updateGig}

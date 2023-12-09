@@ -21,6 +21,6 @@ const authenticateuser = async(req, res, next)=>{
         res.status(401)
         throw new Error('Unauthorized')
     }
-}
+} 
 
 module.exports = {authenticateuser}
