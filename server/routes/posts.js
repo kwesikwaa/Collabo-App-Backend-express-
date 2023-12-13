@@ -7,9 +7,9 @@ const authenticate = require('../middleware/authmiddleware')
 
 router.get('/',getGigs)
 
-// router.post('/', authenticate, createGig)
+router.post('/', authenticate, createGig)
 
-router.route('/:id').get(getSingleGig)
+router.route('/:id').get(getSingleGig).delete(authenticate, deleteGig).put(authenticate, updateGig)
 
     
     

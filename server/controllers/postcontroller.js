@@ -3,6 +3,7 @@ const { mongoose } = require('mongoose')
 const {Gig} = require('../models/dbmodels')
 const multer = require('multer')
 const path = require("path")
+const jwt = require('jsonwebtoken')
 
 const storage = multer.diskStorage({
     filename:(req,file,cb)=>{
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 const authorizeuser = async (userid, gigid)=>{
     const gig = await Gig.findById(gigid)
     
-    if(gig.leaduser !== userid){
+    if(gig.leaduser.toString() !== userid){
         res.status(401)
         throw new Error('Not authorized')  
     }
@@ -23,13 +24,12 @@ const authorizeuser = async (userid, gigid)=>{
 
 
 const createGig = async(req,res)=>{
-    const {lead,title,description,crew,progress,media} = req.body
-
-
+    const {title,description,crew,progress,media} = req.body
+    const leaduser = req.user
 
     try{
         // console.log('inside try')
-        const gig = await Gig.create({...req.body})
+        const gig = await Gig.create({title:title,description:description,leaduser:leaduser})
         console  .log('after gig created variable')
         res.status(201).json(gig)
     }catch(error){

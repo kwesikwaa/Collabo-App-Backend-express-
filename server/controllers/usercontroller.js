@@ -9,7 +9,7 @@ const generatejwt= (id)=>{
 
 const cookieconfig = {
     httpOnly: true,
-    signed: true,
+    signed: false,
 
 }
 
